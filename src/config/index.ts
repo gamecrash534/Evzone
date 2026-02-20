@@ -5,7 +5,7 @@ export interface Config {
     storageLocation?: string,
 }
 
-config();
+config({ quiet: true });
 
 export function getConfig() : Config {
     return { token: process.env.DISCORD_TOKEN, storageLocation: process.env.STORAGE_LOCATION }

@@ -24,6 +24,16 @@ export namespace Storage {
         return await createServerConfig(id);
     }
 
+    export async function incrementIncident(id: string) : Promise<number> {
+        let cfg = await getServer(id);
+        if (!cfg) return 0;
+        cfg.incident++;
+
+        await saveServerConfig(id, cfg);
+        
+        return cfg.incident;
+    }
+
     export async function loadServerConfig(id: string) : Promise<ServerConfiguration | undefined> {
         let resPath = resolveConfigPath(id);
 
@@ -41,6 +51,19 @@ export namespace Storage {
         }
     }
 
+    export async function saveServerConfig(id: string, config: ServerConfiguration) {
+        let resPath = resolveConfigPath(id);
+
+        try {
+            await fs.writeFile(resPath, JSON.stringify(config), { encoding: "utf-8" });
+            servers.set(id, config);
+        } catch (e) {
+            console.error(`[-] Could not save configuration for server ${id}: ${e}`);
+        }
+
+        return;
+    }
+
     export async function createServerConfig(id: string) : Promise<ServerConfiguration | undefined> {
         let resPath = resolveConfigPath(id);
 
@@ -48,6 +71,7 @@ export namespace Storage {
 
         try {
             await fs.writeFile(resPath, JSON.stringify(conf), { encoding: "utf-8" });
+            servers.set(id, conf);
             return conf;
         } catch (e) {
             console.error(`[-] Could not create configuration for server ${id}: ${e}`);
