@@ -1,0 +1,25 @@
+{
+  "name": "petrus",
+  "version": "1.0.0",
+  "description": "A static verification bot for discord",
+  "keywords": [
+    "discord",
+    "verification",
+    "discord-bot"
+  ],
+  "license": "ISC",
+  "author": "game.crash",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "discord-api-types": "^0.38.40",
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.3.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
