@@ -1,7 +1,8 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Events, Guild, Message, MessageFlags, User } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Client, Events, Guild, InteractionType, Message, MessageComponent, MessageFlags, User } from "discord.js";
 import { HoneypotAction, ServerConfiguration } from "../storage/types.js";
 import { Storage } from "../storage/index.js";
 import { ActionsLogger } from "./logger.js";
+import { DiscordClient } from "./index.js";
 
 const maxMessageAge = 10 * 60 * 1000;
 
@@ -37,17 +38,32 @@ export namespace Listener {
         });
     
         client.on(Events.InteractionCreate, async (e) => {
-            if (!e.isButton()) return;
+            switch (e.type) {
+                case InteractionType.ApplicationCommand: {
+                    const command = DiscordClient.commands.get(e.commandName);
+                    if (command) {
+                        try {
+                            await command.execute(e as any);
+                        } catch (error) {
+                            console.error(`[-] Error on command execution: `, error);
+                            await e.reply({ content: 'There was an error executing this command.', flags: MessageFlags.Ephemeral });
+                        }
+                    }
+                    break;
+                }
+                case InteractionType.MessageComponent: {
+                    let guild = await client.guilds.fetch((e as ButtonInteraction).customId.split("i_")[1]);
+                    let member = await guild.members.fetch(e.user);
             
-            let guild = await client.guilds.fetch(e.customId.split("i_")[1]);
-            let member = await guild.members.fetch(e.user);
-    
-            const server = await getServer(guild.id);
-            if (!server) return;
-    
-            member.roles.add(server.auth.authRoleId!);
-    
-            await e.reply({ content: "Thanks for verifying! Do not do the cat", flags: MessageFlags.Ephemeral })
+                    const server = await getServer(guild.id);
+                    if (!server) return;
+            
+                    member.roles.add(server.auth.authRoleId!);
+            
+                    await e.reply({ content: "Thanks for verifying! Do not do the cat", flags: MessageFlags.Ephemeral })
+                    break;
+                }
+            }
         })
     }
 
