@@ -18,10 +18,10 @@ export namespace CommandHandler {
         let auth = f.getSelectedRoles("modal_setup_auth");
 
         const config: ServerConfiguration = {
-            auth: { enabled: auth ? true : false, authRoleId: auth?.keyAt(0) },
-            honeypot: { enabled: channel ? true : false, channelId: channel?.keyAt(0), messageRemoval: messageRemoval === "true", 
+            auth: {  authRoleId: auth?.keyAt(0) },
+            honeypot: { channelId: channel?.keyAt(0), messageRemoval: messageRemoval === "true", 
                 action: stringHoneypotActionMap[action] },
-            logging: { enabled: logging ? true : false, channel: logging?.keyAt(0) },
+            logging: { channel: logging?.keyAt(0) },
             incident: await Storage.getIncident(e.guildId!)
         }
         

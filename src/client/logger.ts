@@ -6,7 +6,7 @@ import { Config } from "../config/index.js";
 
 export namespace ActionsLogger {
     export async function logAction(config: ServerConfiguration, action: Action) {
-        if (!config.logging.enabled) return;
+        if (!config.logging.channel) return;
 
         let channel = await action.guild.channels.fetch(config.logging.channel);
         

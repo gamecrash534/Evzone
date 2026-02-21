@@ -13,14 +13,14 @@ export namespace Listener {
             if (!msg.guildId) return;
     
             const server = await Utils.getServer(msg.guildId);
-            if (!server?.honeypot.enabled || server.honeypot.channelId != msg.channelId) return;
+            if (!server?.honeypot.channelId || server.honeypot.channelId != msg.channelId) return;
     
             HoneypotHandler.handleHoneypotMessage(msg as Message<true>, server);
         });
     
         client.on(Events.GuildMemberAdd, async (usr) => {
             const server = await Utils.getServer(usr.guild.id);
-            if (!server?.auth.enabled) return;
+            if (!server?.auth.authRoleId) return;
     
             VerificationHandler.sendMessage(usr);
         });
