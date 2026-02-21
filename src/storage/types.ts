@@ -5,13 +5,13 @@ export interface ServerConfiguration {
     },
     honeypot: {
         enabled: boolean,
-        channelId: string,
+        channelId?: string,
         action: HoneypotAction,
         messageRemoval: boolean
     },
     logging: {
         enabled: boolean
-        channel: string
+        channel?: string
     },
     incident: number
 }
@@ -37,3 +37,11 @@ export const honeypotActionStringMap: HoneypotActionStringMap = {
     [HoneypotAction.TIMEOUT]: "24d Timeout",
     [HoneypotAction.NONE]: "Nothing",
 }
+
+type HoneypotActionReverseStringMap = Record<string, HoneypotAction>;
+export const stringHoneypotActionMap: HoneypotActionReverseStringMap = {
+    "ban": HoneypotAction.BAN,
+    "kick": HoneypotAction.KICK,
+    "timeout": HoneypotAction.TIMEOUT,
+    "none": HoneypotAction.NONE,
+};

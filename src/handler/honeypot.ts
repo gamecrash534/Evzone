@@ -4,7 +4,7 @@ import { HoneypotAction, ServerConfiguration } from "../storage/types.js";
 
 const maxMessageAge = 3 * 60 * 1000;
 
-export namespace Honeypot {
+export namespace HoneypotHandler {
     export function handleHoneypotMessage(message: Message<true>, conf: ServerConfiguration) {
         let guild = message.guild;
         let user = message.author;

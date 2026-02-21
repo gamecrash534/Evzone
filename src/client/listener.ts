@@ -2,9 +2,10 @@ import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Client
 import { ServerConfiguration } from "../storage/types.js";
 import { Storage } from "../storage/index.js";
 import { DiscordClient } from "./index.js";
-import { Honeypot } from "../handler/honeypot.js";
+import { HoneypotHandler } from "../handler/honeypot.js";
 import { Utils } from "../utils/utils.js";
-import { Verification } from "../handler/verification.js";
+import { VerificationHandler } from "../handler/verification.js";
+import { CommandHandler } from "../handler/commands.js";
 
 export namespace Listener {
     export function register(client: Client) {
@@ -14,14 +15,14 @@ export namespace Listener {
             const server = await Utils.getServer(msg.guildId);
             if (!server?.honeypot.enabled || server.honeypot.channelId != msg.channelId) return;
     
-            Honeypot.handleHoneypotMessage(msg as Message<true>, server);
+            HoneypotHandler.handleHoneypotMessage(msg as Message<true>, server);
         });
     
         client.on(Events.GuildMemberAdd, async (usr) => {
             const server = await Utils.getServer(usr.guild.id);
             if (!server?.auth.enabled) return;
     
-            Verification.sendMessage(usr);
+            VerificationHandler.sendMessage(usr);
         });
     
         client.on(Events.InteractionCreate, async (e) => {
@@ -36,7 +37,8 @@ export namespace Listener {
                     }
                 }
                 return;
-            } else if (e.isMessageComponent()) Verification.handleVerificationInteraction((e as ButtonInteraction), client);
+            } else if (e.isMessageComponent()) await VerificationHandler.handleVerificationInteraction((e as ButtonInteraction), client);
+            else if (e.isModalSubmit()) await CommandHandler.handleModalSubmission(e);
         })
     }
 }

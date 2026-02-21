@@ -34,6 +34,11 @@ export namespace Storage {
         return cfg.incident;
     }
 
+    export async function getIncident(id: string) : Promise<number> {
+        let cfg = await getServer(id);
+        return cfg ? cfg.incident : 0;
+    }
+
     export async function loadServerConfig(id: string) : Promise<ServerConfiguration | undefined> {
         let resPath = resolveConfigPath(id);
 

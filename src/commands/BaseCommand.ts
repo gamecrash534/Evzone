@@ -11,7 +11,7 @@ export class BaseCommand {
         this.options = options;
     }
 
-    async execute(interaction: AutocompleteInteraction<CacheType>) {
+    async execute(interaction: AutocompleteInteraction<CacheType> | CommandInteraction<CacheType>) {
         throw new Error(`Command ${this.name} does not implement an execute method.`);
     }
 };

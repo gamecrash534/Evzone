@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Client, GuildMember, MessageFlags, } from "discord.js";
 import { Utils } from "../utils/utils.js";
 
-export namespace Verification {
+export namespace VerificationHandler {
     export async function sendMessage(user: GuildMember) {
         user.createDM().then(dm => {
             const button = new ButtonBuilder()
