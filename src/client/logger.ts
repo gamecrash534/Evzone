@@ -1,5 +1,5 @@
 import { Guild, TextChannel, User } from "discord.js";
-import { HoneypotAction, ServerConfiguration } from "../storage/types.js";
+import { HoneypotAction, honeypotActionStringMap, ServerConfiguration } from "../storage/types.js";
 import { EmbedBuilder } from "@discordjs/builders";
 import { Storage } from "../storage/index.js";
 import { Config } from "../config/index.js";
@@ -43,12 +43,4 @@ export interface Action {
         name: string
     },
     guild: Guild
-}
-
-type HoneypotActionStringMap = Record<HoneypotAction, string>;
-const honeypotActionStringMap: HoneypotActionStringMap = {
-    [HoneypotAction.BAN]: "Ban",
-    [HoneypotAction.KICK]: "Kick",
-    [HoneypotAction.TIMEOUT]: "24d Timeout",
-    [HoneypotAction.NONE]: "Nothing",
 }

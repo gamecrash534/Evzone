@@ -29,3 +29,11 @@ export const DefaultConfiguration : ServerConfiguration = {
     logging: { enabled: false, channel: "" },
     incident: 0
 }
+
+type HoneypotActionStringMap = Record<HoneypotAction, string>;
+export const honeypotActionStringMap: HoneypotActionStringMap = {
+    [HoneypotAction.BAN]: "Ban",
+    [HoneypotAction.KICK]: "Kick",
+    [HoneypotAction.TIMEOUT]: "24d Timeout",
+    [HoneypotAction.NONE]: "Nothing",
+}
